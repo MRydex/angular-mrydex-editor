@@ -1,0 +1,15 @@
+<section
+  class="mrydex-editor"
+  [class.mrydex-editor--readonly]="readOnly()">
+  @if (!readOnly() && toolbar().length) {
+  <mrydex-editor-toolbar
+    [editor]="instance()"
+    [version]="version()"
+    [groups]="toolbar()"
+    [label]="toolbarLabel()" />
+  }
+
+  <article
+    #editorContainer
+    class="mrydex-editor__content"></article>
+</section>

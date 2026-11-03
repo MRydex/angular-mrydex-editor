@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "angular-mrydex-editor": {
+      "projectType": "library",
+      "root": "projects/angular-mrydex-editor",
+      "sourceRoot": "projects/angular-mrydex-editor/src",
+      "prefix": "mrydex",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/angular-mrydex-editor/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/angular-mrydex-editor/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        }
+      }
+    }
+  }
+}

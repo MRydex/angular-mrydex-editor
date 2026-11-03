@@ -1,0 +1,39 @@
+{
+  "name": "angular-mrydex-editor",
+  "version": "21.0.0",
+  "description": "Generic, plugin-driven rich text editor for Angular, built on Tiptap. Bring your own extensions, toolbar and texts.",
+  "keywords": [
+    "angular",
+    "editor",
+    "rich-text",
+    "wysiwyg",
+    "tiptap",
+    "prosemirror",
+    "mrydex"
+  ],
+  "author": "Ezequiel Merino Spinedi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MRydex/angular-mrydex-editor.git"
+  },
+  "homepage": "https://github.com/MRydex/angular-mrydex-editor#readme",
+  "bugs": {
+    "url": "https://github.com/MRydex/angular-mrydex-editor/issues"
+  },
+  "peerDependencies": {
+    "@angular/core": "^21.2.0"
+  },
+  "dependencies": {
+    "@tiptap/core": "^3.32.0",
+    "@tiptap/pm": "^3.32.0",
+    "@tiptap/starter-kit": "^3.32.0",
+    "@tiptap/extension-font-family": "^3.32.0",
+    "@tiptap/extension-table": "^3.32.0",
+    "@tiptap/extension-text-align": "^3.32.0",
+    "@tiptap/extension-text-style": "^3.32.0",
+    "@tiptap/extensions": "^3.32.0",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

@@ -1,0 +1,123 @@
+// Editable content rendered by Tiptap. The class is set by the editor itself (`editorProps.attributes`).
+// Not encapsulated (see `MrydexEditor`): Tiptap creates this DOM at runtime, outside the template.
+// `!important` on outline/border/box-shadow: app-wide `[contenteditable]:focus` or form-control rules (UI libraries)
+// would otherwise draw a second frame inside the editor; the focus ring lives on `.mrydex-editor__content`.
+.mrydex-editor-content {
+  min-height: 250px;
+  padding: 16px 20px;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  line-height: 1.5;
+  color: var(--_text);
+  overflow-wrap: anywhere;
+
+  // The focus ring is drawn on the frame (`.mrydex-editor__content`, editor.scss), not inside the scroll area.
+  &:focus,
+  &:focus-visible {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  > * + * {
+    margin-top: 0.75em;
+  }
+
+  p {
+    margin: 0 0 0.5em;
+  }
+
+  .read-only-block {
+    background: var(--_locked);
+    cursor: not-allowed;
+  }
+
+  .editable-field {
+    background: var(--_field);
+    cursor: text;
+
+    // The browser draws a focus outline on every nested `contenteditable="true"`.
+    &:focus,
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  blockquote {
+    margin: 1em 0;
+    padding-left: 1rem;
+    border-left: 4px solid var(--_placeholder);
+    color: var(--_muted-text);
+    font-style: italic;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.5rem;
+    margin: 0.5em 0;
+  }
+
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 1em 0;
+    overflow: hidden;
+
+    td,
+    th {
+      min-width: 1em;
+      border: 1px solid var(--_border);
+      padding: 8px 12px;
+      vertical-align: top;
+      box-sizing: border-box;
+      position: relative;
+
+      > * {
+        margin-bottom: 0;
+      }
+    }
+
+    th {
+      font-weight: bold;
+      text-align: left;
+      background-color: var(--_locked);
+    }
+
+    .selectedCell::after {
+      z-index: 2;
+      position: absolute;
+      content: '';
+      inset: 0;
+      background: rgba(200, 200, 255, 0.3);
+      pointer-events: none;
+    }
+
+    .column-resize-handle {
+      position: absolute;
+      right: -2px;
+      top: 0;
+      bottom: -2px;
+      width: 4px;
+      background-color: var(--_accent);
+      pointer-events: none;
+    }
+  }
+
+  a {
+    color: var(--_accent);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: var(--_placeholder);
+    pointer-events: none;
+    height: 0;
+  }
+}

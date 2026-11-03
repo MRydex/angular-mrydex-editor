@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+// Colors come from the `--_*` variables of `.mrydex-editor` (editor.scss).
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background-color: var(--_surface);
+  border: 1px solid var(--_border);
+  border-bottom-color: var(--_divider);
+  border-radius: var(--_radius) var(--_radius) 0 0;
+}

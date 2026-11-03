@@ -1,0 +1,14 @@
+<div
+  class="editor-toolbar"
+  role="toolbar"
+  [attr.aria-label]="label()"
+  (keydown)="onKeydown($event)">
+  @for (group of groups(); track group) {
+  <mrydex-editor-toolbar-group
+    [editor]="editor()"
+    [version]="version()"
+    [controls]="group.controls"
+    [alignEnd]="group.alignEnd ?? false"
+    [idPrefix]="idPrefix + '-' + $index" />
+  }
+</div>

@@ -1,0 +1,41 @@
+@for (item of view(); track item.type === 'select' ? item.select : item.button) {
+@if (item.type === 'select') {
+<label
+  class="editor-toolbar-group__sr-only"
+  [for]="item.id"
+  >{{ item.select.label }}</label
+>
+<select
+  [id]="item.id"
+  class="editor-toolbar-group__select"
+  [title]="item.select.label"
+  #select
+  (change)="onSelectChange(item.select, select.value)">
+  @for (option of item.options; track option.value) {
+  <option
+    [value]="option.value"
+    [selected]="option.value === item.value"
+    >{{ option.text }}</option
+  >
+  }
+</select>
+} @else {
+<button
+  type="button"
+  class="editor-toolbar-group__button"
+  [class.editor-toolbar-group__button--prominent]="item.button.text"
+  [class.editor-toolbar-group__button--active]="item.active"
+  [attr.aria-pressed]="item.button.active ? item.active : null"
+  [disabled]="!item.enabled"
+  [title]="item.button.tooltip ?? item.button.label"
+  [attr.aria-label]="item.button.label"
+  (click)="onButtonClick(item.button)">
+  @if (item.button.icon) {
+  <mrydex-editor-icon [svg]="item.button.icon" />
+  }
+  @if (item.button.text) {
+  <span>{{ item.button.text }}</span>
+  }
+</button>
+}
+}

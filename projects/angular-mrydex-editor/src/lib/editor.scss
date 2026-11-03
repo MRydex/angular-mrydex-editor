@@ -1,0 +1,56 @@
+// Theme: the app overrides the public `--mrydex-editor-*` variables (on `mrydex-editor` or any ancestor).
+// The private `--_*` copies resolve them once, with the default, for this editor and its toolbar.
+.mrydex-editor {
+  --_background: var(--mrydex-editor-background, #ffffff);
+  --_text: var(--mrydex-editor-text, #1e293b);
+  --_muted-text: var(--mrydex-editor-muted-text, #475569);
+  --_placeholder: var(--mrydex-editor-placeholder, #64748b); // ≥ 4.5:1 on white (AA)
+  --_border: var(--mrydex-editor-border, #cbd5e1);
+  --_divider: var(--mrydex-editor-divider, #e2e8f0);
+  --_accent: var(--mrydex-editor-accent, #0369a1); // ≥ 4.5:1 on white: also the link color
+  --_surface: var(--mrydex-editor-surface, #f8fafc);
+  --_locked: var(--mrydex-editor-locked-background, #f1f5f9);
+  --_field: var(--mrydex-editor-field-background, #dbeafe);
+  --_active-background: var(--mrydex-editor-active-background, #e0f2fe);
+  --_active-border: var(--mrydex-editor-active-border, #7dd3fc);
+  --_active-text: var(--mrydex-editor-active-text, #0369a1);
+  // #0369a1/#075985: AA contrast (≥ 4.5:1) with 12px white text.
+  --_prominent: var(--mrydex-editor-prominent, #0369a1);
+  --_prominent-hover: var(--mrydex-editor-prominent-hover, #075985);
+  --_font-family: var(--mrydex-editor-font-family, Arial, sans-serif);
+  --_font-size: var(--mrydex-editor-font-size, 16px);
+  --_radius: var(--mrydex-editor-radius, 4px);
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--_radius);
+  background-color: var(--_background);
+
+  &--readonly {
+    .mrydex-editor__content {
+      border-top: 1px solid var(--_border);
+      border-radius: var(--_radius);
+      background-color: var(--_surface);
+    }
+  }
+
+  &__content {
+    border: 1px solid var(--_border);
+    border-top: none;
+    border-radius: 0 0 var(--_radius) var(--_radius);
+    background-color: var(--_background);
+    min-height: 250px;
+    // Past this height the text scrolls; the toolbar stays on top (it is outside this container).
+    max-height: 500px;
+    overflow-y: auto;
+    position: relative;
+
+    // The editable area has no outline of its own (see editor-content.scss): the frame shows the focus.
+    &:has(.mrydex-editor-content:focus-visible) {
+      outline: 2px solid var(--_accent);
+      outline-offset: -2px;
+    }
+    // The DOM Tiptap renders inside is styled in editor-content.scss
+  }
+}
