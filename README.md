@@ -1,5 +1,7 @@
 # angular-mrydex-editor
 
+[![npm](https://img.shields.io/npm/v/angular-mrydex-editor)](https://www.npmjs.com/package/angular-mrydex-editor)
+
 Generic, plugin-driven rich text editor for Angular 21 (21.2+), built on [Tiptap](https://tiptap.dev).
 
 The editor **enables nothing by default**: your app passes the extensions, the toolbar and the paste handling.
@@ -16,6 +18,8 @@ combine with your own or replace.
 ```bash
 npm i angular-mrydex-editor
 ```
+
+Package on npm: [npmjs.com/package/angular-mrydex-editor](https://www.npmjs.com/package/angular-mrydex-editor).
 
 Tiptap comes as a dependency: no need to install it. No stylesheet import needed: the component ships its own styles, all scoped under `.mrydex-editor*`.
 
