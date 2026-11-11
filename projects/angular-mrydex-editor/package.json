@@ -1,6 +1,6 @@
 {
   "name": "angular-mrydex-editor",
-  "version": "21.0.0",
+  "version": "21.1.0",
   "description": "Generic, plugin-driven rich text editor for Angular, built on Tiptap. Bring your own extensions, toolbar and texts.",
   "keywords": [
     "angular",
