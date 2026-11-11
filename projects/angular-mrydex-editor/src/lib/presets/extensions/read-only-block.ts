@@ -3,7 +3,7 @@ import type { Fragment, Node as PMNode } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { ReplaceStep, type Step } from '@tiptap/pm/transform';
 
-import { replacesDocument } from './replaces-document';
+import { isRemoteChange, replacesDocument } from './replaces-document';
 
 /**
  * Read-only block inside the editor: `<div contenteditable="false">…</div>`.
@@ -77,7 +77,7 @@ export const ReadOnlyBlock = Node.create({
       new Plugin({
         key: new PluginKey('readOnlyBlock'),
         filterTransaction: tr => {
-          if (!tr.docChanged || replacesDocument(tr)) return true;
+          if (!tr.docChanged || replacesDocument(tr) || isRemoteChange(tr)) return true;
           if (startsWithBlock(tr.before) && !startsWithBlock(tr.doc)) return false;
           if (tr.steps.some((step, i) => reachesBlock(tr.docs[i], step))) return false;
           // Plain replacements away from every block (typing, pasting) cannot change one: no need to walk the

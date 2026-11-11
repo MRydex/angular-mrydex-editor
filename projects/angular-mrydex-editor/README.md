@@ -259,12 +259,67 @@ For your own guards with the same rule, use `replacesDocument(tr)` in `filterTra
 
 > Escape any data you put into those templates: the `data` HTML is parsed.
 
+## Real-time collaboration (optional)
+
+The same editor works alone (default) or shared, like Google Docs: several users editing the same document at once,
+with their cursors. It lives in its own entry point, `angular-mrydex-editor/collaboration`: apps that do not import it
+do not install or bundle anything extra.
+
+It uses [Yjs](https://yjs.dev) (a CRDT: every client merges the changes, the server only stores and relays them) over
+a SignalR hub. Install the optional peer dependencies:
+
+```bash
+npm i yjs y-protocols @microsoft/signalr @tiptap/y-tiptap @tiptap/extension-collaboration @tiptap/extension-collaboration-caret
+```
+
+```ts
+import { DestroyRef, inject } from '@angular/core';
+import { baseExtensions } from 'angular-mrydex-editor';
+import { CollaborationSession, collaborationExtensions } from 'angular-mrydex-editor/collaboration';
+
+protected readonly session = new CollaborationSession({
+  hubUrl: `${environment.API_URL}hubs/editor`,
+  documentId: `doc_${id}`,
+  accessToken: () => auth.token(),
+});
+protected readonly extensions = [
+  ...baseExtensions('Write here…', { undoRedo: false }), // collaboration brings its own undo
+  ...collaborationExtensions(this.session, { name: user.name, color: '#1677ff' }),
+];
+
+constructor() {
+  this.session.connect().catch(() => /* show an error, or fall back to the normal editor */ undefined);
+  inject(DestroyRef).onDestroy(() => this.session.destroy());
+}
+```
+
+```html
+<mrydex-editor
+  [extensions]="extensions"
+  [readOnly]="!session.synced() || !session.canEdit()"
+  [(data)]="html" />
+```
+
+- With collaboration the shared document owns the content: `data` is not loaded into the editor, it only goes out
+  (every change, local or remote, updates it). Documents saved as HTML before are loaded once, by the server
+  (see the backend contract).
+- Connect only where the editor is rendered right away (not behind a `@defer` or a closed tab): the first client to
+  open a document saved as HTML converts it with the editor, and the others wait for it.
+- Bind `readOnly` as above: the server rejects changes from users without edit rights, so their local edits would
+  never reach the others.
+- `session.status()` (`connecting` / `connected` / `disconnected`) shows the connection; a dropped connection retries
+  on its own and sends the changes made meanwhile.
+- `ReadOnlyBlock` and `EditableField` keep locking local edits; changes that come from the shared document always
+  go through (`isRemoteChange(tr)` tells them apart in your own guards).
+- The hub contract (methods, payloads, persistence, security) is in
+  [`docs/collaboration-backend.md`](https://github.com/MRydex/angular-mrydex-editor/blob/master/docs/collaboration-backend.md).
+
 ## Presets
 
 | Export | What it is |
 |---|---|
-| `baseExtensions(placeholder?)` | StarterKit, font family, font size, line height, alignment, tables, indent, editable fields, read-only blocks and placeholder. |
-| `FontSize`, `Indent`, `EditableField`, `ReadOnlyBlock`, `isExplicitLink`, `replacesDocument`, `REPLACE_DOCUMENT_META` | Individual extensions and helpers. |
+| `baseExtensions(placeholder?, { undoRedo? })` | StarterKit, font family, font size, line height, alignment, tables, indent, editable fields, read-only blocks and placeholder. `undoRedo: false` for collaboration. |
+| `FontSize`, `Indent`, `EditableField`, `ReadOnlyBlock`, `isExplicitLink`, `replacesDocument`, `isRemoteChange`, `REPLACE_DOCUMENT_META` | Individual extensions and helpers. |
 | `fullToolbar(texts?)` | Toolbar with all the groups below. |
 | `historyButtons`, `formattingButtons`, `alignmentButtons`, `listButtons`, `linkAndTableButtons`, `utilityButtons` `(texts?)` | Button groups. |
 | `fontFamilySelect(texts?, families?, fallback?)`, `fontSizeSelect(texts?, sizes?, fallback?)`, `FONT_FAMILIES`, `FONT_SIZES` | Font family and size selects. |

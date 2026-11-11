@@ -13,7 +13,7 @@ import {
   type Step,
 } from '@tiptap/pm/transform';
 
-import { replacesDocument } from './replaces-document';
+import { isRemoteChange, replacesDocument } from './replaces-document';
 
 interface Range {
   readonly from: number;
@@ -222,7 +222,11 @@ export const EditableField = Mark.create({
       new Plugin({
         key,
         filterTransaction: tr => {
-          if (tr.getMeta(key) || !tr.docChanged || replacesDocument(tr) || !hasFields(tr.before)) return true;
+          // A remote change is already marked in the shared document: marking it again here would repeat it on
+          // every client.
+          if (tr.getMeta(key) || !tr.docChanged || replacesDocument(tr) || isRemoteChange(tr) || !hasFields(tr.before)) {
+            return true;
+          }
 
           if (!tr.steps.every((step, i) => isEditableStep(tr.before, step, backTo0(tr, i)))) return false;
           // Deleting all the text of a field would leave nowhere to type: every field keeps some content (typing

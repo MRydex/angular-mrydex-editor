@@ -22,7 +22,33 @@
     "url": "https://github.com/MRydex/angular-mrydex-editor/issues"
   },
   "peerDependencies": {
-    "@angular/core": "^21.2.0"
+    "@angular/core": "^21.2.0",
+    "@microsoft/signalr": "^10.0.0",
+    "@tiptap/extension-collaboration": "^3.32.0",
+    "@tiptap/extension-collaboration-caret": "^3.32.0",
+    "@tiptap/y-tiptap": "^3.0.7",
+    "y-protocols": "^1.0.6",
+    "yjs": "^13.6.13"
+  },
+  "peerDependenciesMeta": {
+    "@microsoft/signalr": {
+      "optional": true
+    },
+    "@tiptap/extension-collaboration": {
+      "optional": true
+    },
+    "@tiptap/extension-collaboration-caret": {
+      "optional": true
+    },
+    "@tiptap/y-tiptap": {
+      "optional": true
+    },
+    "y-protocols": {
+      "optional": true
+    },
+    "yjs": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@tiptap/core": "^3.32.0",

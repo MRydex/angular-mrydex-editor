@@ -5,6 +5,7 @@ import {
   ElementRef,
   OnDestroy,
   ViewEncapsulation,
+  computed,
   effect,
   input,
   model,
@@ -65,6 +66,8 @@ export class MrydexEditor implements AfterViewInit, OnDestroy {
   /** Tiptap instance, for app-specific commands (`instance()?.chain()…`). */
   readonly instance = this._tiptap.asReadonly();
   protected readonly version = this._version.asReadonly();
+  /** With the Yjs `Collaboration` extension the shared document owns the content: `data` only goes out. */
+  private readonly _collaborative = computed(() => this.extensions().some(e => e.name === 'collaboration'));
 
   // effect() on purpose: it syncs an imperative library (Tiptap) with the inputs, it does not derive state.
   private readonly _syncDataEffect = effect(() => {
@@ -72,7 +75,7 @@ export class MrydexEditor implements AfterViewInit, OnDestroy {
     const editor = this._tiptap();
     const emitted = this._emitted;
     this._emitted = null;
-    if (!editor || content === emitted || content === getEditorHtml(editor)) return;
+    if (!editor || this._collaborative() || content === emitted || content === getEditorHtml(editor)) return;
     if (!content?.trim() && isEditorEmpty(editor)) return;
     editor
       .chain()
@@ -119,7 +122,7 @@ export class MrydexEditor implements AfterViewInit, OnDestroy {
           transformPastedHTML: html => this.transformPaste()(html),
         },
         extensions: this.extensions(),
-        content: this.data() || '',
+        content: this._collaborative() ? undefined : this.data() || '',
         editable: !this.readOnly(),
         onUpdate: ({ editor }) => {
           const html = getEditorHtml(editor);

@@ -16,10 +16,15 @@ import { ReadOnlyBlock } from './read-only-block';
  * Extensions preset: what `fullToolbar()` needs (text, font family, font size, alignment, tables, indent,
  * links) plus editable fields and read-only blocks.
  * `placeholder` can be a function to follow an `input()`.
+ * `undoRedo: false` drops the local undo history: required with collaboration, which brings its own.
  */
-export function baseExtensions(placeholder: string | (() => string) = TEXTS_EN.placeholder): Extensions {
+export function baseExtensions(
+  placeholder: string | (() => string) = TEXTS_EN.placeholder,
+  { undoRedo = true }: { undoRedo?: boolean } = {},
+): Extensions {
   return [
     StarterKit.configure({
+      ...(undoRedo ? {} : { undoRedo: false }),
       heading: { levels: [1, 2, 3, 4] },
       link: {
         openOnClick: false,

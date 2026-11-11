@@ -120,4 +120,30 @@
     pointer-events: none;
     height: 0;
   }
+
+  // Other users' cursors in collaboration (`CollaborationCaret` sets each user's color inline, without styles).
+  .collaboration-carets {
+    &__caret {
+      position: relative;
+      margin: 0 -1px;
+      border-left: 1px solid;
+      border-right: 1px solid;
+      word-break: normal;
+      pointer-events: none;
+    }
+
+    &__label {
+      position: absolute;
+      left: -1px;
+      top: -1.4em;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px 3px 3px 0;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: normal;
+      white-space: nowrap;
+      user-select: none;
+    }
+  }
 }

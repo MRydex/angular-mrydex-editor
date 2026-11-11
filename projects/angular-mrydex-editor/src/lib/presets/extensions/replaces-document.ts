@@ -14,3 +14,18 @@ export const REPLACE_DOCUMENT_META = 'mrydex:replaceDocument';
 export function replacesDocument(tr: Transaction): boolean {
   return tr.getMeta(REPLACE_DOCUMENT_META) === true;
 }
+
+/**
+ * Meta key of the Yjs sync plugin (`PluginKey('y-sync')` from `@tiptap/y-tiptap`). Read by name so the core
+ * does not depend on Yjs.
+ */
+const Y_SYNC_META = 'y-sync$';
+
+/**
+ * `true` if the transaction applies a change that already happened in the shared Yjs document (an edit from
+ * another user, the initial load, a collaborative undo). Guards must let it through: rejecting it would leave
+ * the editor out of sync with the shared document. Always `false` without collaboration.
+ */
+export function isRemoteChange(tr: Transaction): boolean {
+  return !!tr.getMeta(Y_SYNC_META);
+}
